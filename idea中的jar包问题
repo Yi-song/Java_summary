@@ -1,1 +1,18 @@
-当给idea导入jar包时
+在导入jar包时分为两种情况：
+1、java项目：将jar包直接粘贴到项目src文件夹下，右键->Add as Library即可。
+2、Web项目：当为web项目时根据不同的要求（要求jar在不同的项目生命周期起作用）又不同的做法，当然，在实际开发时，maven已经帮我们解决好了这些东西。
+
+  首先解释一下生命周期以及为什么不同的jar需要在项目的各个生命周期都有效。比如说数据库的驱动jar包mysql-connector-java.jar,我们在进行创建数据库
+  链接时利用的是反射原理，不需要直接进行new对象，利用Class.forName进行对象的创建，这就不需要jar在开发编译时有效，只需要在运行时有效即可，但是又
+  针对另外一些jar包，我们需要在编写时就行进行此jar包中某一些类的创建，比如，commons-dbcp.jar数据库连接池的jar包，我们需要进行new DataSourcePool()
+  的操作，因此需要其在编译、开发、运行时均有效。
+  
+  1、运行时有效：将jar拷贝到Web-Content/lib下即可，有时由于idea本身吃内存等原因，将jar包放入lib可能无效，这时，在Project Structure->
+  Artifacts->Output Layout中WEB-INF下重新新建lib，将jar导入即可，这两个WEB-INF是同一个。两个二选一即可，不过由于保险起见，可以都导入。
+  2、运行时和编译开发都有效：首先上面运行时有效的步骤操作一遍，是jar在运行时有效，接着按照开头第1种java项目的办法，将jar包直接粘贴到项目src文件夹下，
+  右键->Add as Library即可。
+  
+  注：在一些教程中，会这样操作Project Structrue ->Modules-> Dependencies进行jar包的添加，然后将jar的scope的改为compile，这么操作是可以实现的，
+  但是按照web项目的约定，第三方的jar是需要放在WEB-INF下的lib文件夹下，按照上面的办法，不符合web项目约定。
+  
+  
